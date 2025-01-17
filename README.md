@@ -1,5 +1,10 @@
 paping tool made in python instead of using cmd if you are on a vps to install on
 
+
+![Screenshot 2025-01-17 185355](https://github.com/user-attachments/assets/488becd6-9838-45cb-970c-989d9cac36d1)
+
+
+
 IInstalltion on Linux (deb)
 
 sudo apt-get install git
