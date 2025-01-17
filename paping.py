@@ -33,24 +33,29 @@ def main():
     parser.add_argument("port", type=int, help="Target port")
     parser.add_argument("-p", "--protocol", choices=["tcp", "udp"], default="tcp", help="Protocol to use (default: tcp)")
     parser.add_argument("-t", "--timeout", type=int, default=2, help="Timeout in seconds (default: 2)")
+    parser.add_argument("-i", "--interval", type=int, default=1, help="Interval between pings in seconds (default: 1)")
 
     args = parser.parse_args()
     host = args.host
     port = args.port
     protocol = args.protocol
     timeout = args.timeout
+    interval = args.interval
 
     print(f"Pinging {colored(host, 'cyan')}:{colored(port, 'yellow')} using {colored(protocol.upper(), 'green')} with a timeout of {colored(timeout, 'magenta')} seconds...")
 
-    if protocol == "tcp":
-        success, result = tcp_ping(host, port, timeout)
-    else:  # udp
-        success, result = udp_ping(host, port, timeout)
+    while True:
+        if protocol == "tcp":
+            success, result = tcp_ping(host, port, timeout)
+        else:  # udp
+            success, result = udp_ping(host, port, timeout)
 
-    if success:
-        print(colored(f"Success! Response time: {result:.2f} ms", "green"))
-    else:
-        print(colored(f"Skid is offline: {host} ({result})", "red"))
+        if success:
+            print(colored(f"Success! Response time: {result:.2f} ms", "green"))
+        else:
+            print(colored(f"Skid is offline: {host} ({result})", "red"))
+
+        time.sleep(interval)
 
 if __name__ == "__main__":
     main()
