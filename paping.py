@@ -52,7 +52,7 @@ def main():
     timeout = args.timeout
     interval = args.interval
 
-    print(f"Pinging {colored(host, 'cyan')}:{colored(port, 'yellow')} using {colored(protocol.upper(), 'green')} with a timeout of {colored(timeout, 'magenta')} seconds...")
+    print(f"{colored('Pinging', 'green')} {colored(host, 'cyan')}:{colored(port, 'yellow')} using {colored(protocol.upper(), 'red')} with a timeout of {colored(timeout, 'magenta')} seconds...")
 
     try:
         while True:
