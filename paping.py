@@ -2,7 +2,7 @@ import socket
 import time
 import argparse
 from termcolor import colored
-from ping3 import ping, verbose_ping
+from ping3 import ping
 
 def tcp_ping(host, port, timeout=2):
     try:
@@ -10,6 +10,8 @@ def tcp_ping(host, port, timeout=2):
         with socket.create_connection((host, port), timeout):
             response_time = (time.time() - start_time) * 1000  # in milliseconds
         return True, response_time
+    except socket.timeout:
+        return False, "Timeout"
     except Exception as e:
         return False, str(e)
 
