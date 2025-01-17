@@ -44,18 +44,26 @@ def main():
 
     print(f"Pinging {colored(host, 'cyan')}:{colored(port, 'yellow')} using {colored(protocol.upper(), 'green')} with a timeout of {colored(timeout, 'magenta')} seconds...")
 
-    while True:
-        if protocol == "tcp":
-            success, result = tcp_ping(host, port, timeout)
-        else:  # udp
-            success, result = udp_ping(host, port, timeout)
+    try:
+        while True:
+            if protocol == "tcp":
+                success, result = tcp_ping(host, port, timeout)
+            else:  # udp
+                success, result = udp_ping(host, port, timeout)
 
-        if success:
-            print(colored(f"Success! Response time: {result:.2f} ms", "green"))
+            if success:
+                print(colored(f"Success! Response time: {result:.2f} ms", "green"))
+            else:
+                print(colored(f"Skid is offline: {host} ({result})", "red"))
+
+            time.sleep(interval)
+    except KeyboardInterrupt:
+        print("\nPing interrupted. Do you want to stop or return to the menu?")
+        choice = input("Enter 'stop' to stop or 'menu' to return to the menu: ").strip().lower()
+        if choice == 'menu':
+            main()
         else:
-            print(colored(f"Skid is offline: {host} ({result})", "red"))
-
-        time.sleep(interval)
+            print("Stopping...")
 
 if __name__ == "__main__":
     main()
