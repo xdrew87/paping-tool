@@ -2,6 +2,7 @@ import socket
 import time
 import argparse
 from termcolor import colored
+from ping3 import ping, verbose_ping
 
 def tcp_ping(host, port, timeout=2):
     try:
@@ -9,8 +10,6 @@ def tcp_ping(host, port, timeout=2):
         with socket.create_connection((host, port), timeout):
             response_time = (time.time() - start_time) * 1000  # in milliseconds
         return True, response_time
-    except socket.timeout:
-        return False, "Timeout"
     except Exception as e:
         return False, str(e)
 
@@ -26,6 +25,15 @@ def udp_ping(host, port, timeout=2):
         return True, response_time
     except socket.timeout:
         return False, "Timeout"
+    except Exception as e:
+        return False, str(e)
+
+def icmp_ping(host, timeout=2):
+    try:
+        response_time = ping(host, timeout=timeout) * 1000  # in milliseconds
+        if response_time is None:
+            return False, "No ICMP response"
+        return True, response_time
     except Exception as e:
         return False, str(e)
 
@@ -57,6 +65,11 @@ def main():
                 print(colored(f"Success! Response time: {result:.2f} ms", "green"))
             else:
                 print(colored(f"Skid is offline: {host} ({result})", "red"))
+                icmp_success, icmp_result = icmp_ping(host, timeout)
+                if icmp_success:
+                    print(colored(f"Host is online (ICMP): {host} ({icmp_result:.2f} ms)", "green"))
+                else:
+                    print(colored(f"No ICMP response from: {host} ({icmp_result})", "red"))
 
             time.sleep(interval)
     except KeyboardInterrupt:
