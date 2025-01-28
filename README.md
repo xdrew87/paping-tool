@@ -25,4 +25,4 @@ cd paping-tool
 
 pip3 install -r requirements.txt
 
-python3 paping-tool.py 1.1.1.1 80 -p tcp -i 1 
+python3 paping.py 1.1.1.1 80 -p tcp -i 1 
